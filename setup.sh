@@ -3,6 +3,7 @@ set -euo pipefail
 
 INSTALL_DIR="/opt/openclaw"
 SERVICE_NAME="openclaw"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "==> Verificando Node.js 22+..."
 if ! command -v node &>/dev/null || [[ $(node -e "process.exit(parseInt(process.versions.node) >= 22 ? 0 : 1)" 2>/dev/null; echo $?) -ne 0 ]]; then
@@ -17,8 +18,6 @@ npm install -g openclaw@latest
 
 echo "==> Preparando directorio $INSTALL_DIR..."
 mkdir -p "$INSTALL_DIR"
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 cp "$SCRIPT_DIR/config.yaml" "$INSTALL_DIR/config.yaml"
 
@@ -46,8 +45,7 @@ echo "==> Registrando plugin en OpenClaw..."
 openclaw plugins install -l "$INSTALL_DIR/extensions/sheets-plugin" || true
 
 echo "==> Instalando servicio systemd..."
-SCRIPT_DIR_ABS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cp "$SCRIPT_DIR_ABS/openclaw.service" /etc/systemd/system/${SERVICE_NAME}.service
+cp "$SCRIPT_DIR/openclaw.service" /etc/systemd/system/${SERVICE_NAME}.service
 
 systemctl daemon-reload
 systemctl enable "$SERVICE_NAME"

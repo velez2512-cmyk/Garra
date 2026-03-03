@@ -92,11 +92,13 @@ const register = (api: any) => {
       const truncated = rows.length > limit;
       rows = rows.slice(0, limit);
 
+      const datos = rows.map((row, i) => ({ _fila: i + 2, ...row }));
+
       return {
         hoja: input.sheetName,
-        total: rows.length,
+        total: datos.length,
         truncado: truncated,
-        datos: rows,
+        datos,
       };
     },
   });
