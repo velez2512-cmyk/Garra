@@ -35,6 +35,16 @@ if [[ ! -f "$INSTALL_DIR/.env" ]]; then
   fi
 fi
 
+echo "==> Instalando dependencias del plugin de Google Sheets..."
+mkdir -p "$INSTALL_DIR/extensions"
+cp -r "$SCRIPT_DIR/extensions/sheets-plugin" "$INSTALL_DIR/extensions/sheets-plugin"
+cd "$INSTALL_DIR/extensions/sheets-plugin"
+npm install --omit=dev
+cd "$INSTALL_DIR"
+
+echo "==> Registrando plugin en OpenClaw..."
+openclaw plugins install -l "$INSTALL_DIR/extensions/sheets-plugin" || true
+
 echo "==> Instalando servicio systemd..."
 SCRIPT_DIR_ABS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cp "$SCRIPT_DIR_ABS/openclaw.service" /etc/systemd/system/${SERVICE_NAME}.service
@@ -46,10 +56,11 @@ echo ""
 echo "==> Setup completo."
 echo ""
 echo "Pasos siguientes:"
-echo "  1. Asegurate de tener $INSTALL_DIR/.env con tu ANTHROPIC_API_KEY"
-echo "  2. Iniciá el servicio:  systemctl start $SERVICE_NAME"
-echo "  3. Mirá el QR de WhatsApp: journalctl -u $SERVICE_NAME -f"
-echo "  4. Escaneá el QR con tu teléfono desde WhatsApp > Dispositivos vinculados"
+echo "  1. Asegurate de tener $INSTALL_DIR/.env con todas las variables (ver .env.example)"
+echo "  2. Copiá el JSON del Service Account de Google a la ruta de GOOGLE_CREDENTIALS_FILE"
+echo "  3. Iniciá el servicio:  systemctl start $SERVICE_NAME"
+echo "  4. Mirá el QR de WhatsApp: journalctl -u $SERVICE_NAME -f"
+echo "  5. Escaneá el QR con tu teléfono desde WhatsApp > Dispositivos vinculados"
 echo ""
 echo "Comandos útiles:"
 echo "  systemctl status $SERVICE_NAME      # estado del servicio"

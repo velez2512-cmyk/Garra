@@ -7,4 +7,26 @@ channels:
   - type: whatsapp
     session: main
 
-plugins: []
+plugins:
+  entries:
+    sheets-plugin:
+      enabled: true
+      path: ./extensions/sheets-plugin
+      config:
+        spreadsheetId: ${SPREADSHEET_ID}
+        credentialsFile: ${GOOGLE_CREDENTIALS_FILE}
+        alertPhoneNumber: ${ALERT_PHONE_NUMBER}
+        alertIntervalMinutes: 30
+        # Reglas de alerta automática (ejemplos — modificar según tus planillas)
+        alertRules:
+          # Ejemplo 1: alerta cuando el stock baje de 10 unidades
+          # - sheetName: "Stock"
+          #   column: "Cantidad"
+          #   condition: "< 10"
+          #   message: "⚠️ Stock bajo — Fila {row}: {Producto} tiene solo {Cantidad} unidades"
+          #
+          # Ejemplo 2: alerta cuando una tarea quede como PENDIENTE
+          # - sheetName: "Tareas"
+          #   column: "Estado"
+          #   condition: "=== \"PENDIENTE\""
+          #   message: "📋 Tarea pendiente — Fila {row}: {Descripcion}"

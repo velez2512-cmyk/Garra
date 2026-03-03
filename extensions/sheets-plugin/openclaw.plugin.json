@@ -1,0 +1,57 @@
+{
+  "id": "sheets-plugin",
+  "name": "Google Sheets Plugin",
+  "description": "Conecta el bot con Google Sheets: consultar, modificar y recibir alertas automáticas.",
+  "version": "1.0.0",
+  "configSchema": {
+    "type": "object",
+    "required": ["spreadsheetId", "credentialsFile"],
+    "properties": {
+      "spreadsheetId": {
+        "type": "string",
+        "description": "ID del Google Spreadsheet principal"
+      },
+      "credentialsFile": {
+        "type": "string",
+        "description": "Path al archivo JSON de Service Account de Google"
+      },
+      "alertPhoneNumber": {
+        "type": "string",
+        "description": "Número de WhatsApp al que se envían los recordatorios (formato: +5491112345678)"
+      },
+      "alertIntervalMinutes": {
+        "type": "number",
+        "description": "Intervalo en minutos para chequear condiciones de alerta",
+        "default": 30
+      },
+      "alertRules": {
+        "type": "array",
+        "description": "Reglas de alerta automática",
+        "items": {
+          "type": "object",
+          "required": ["sheetName", "column", "condition", "message"],
+          "properties": {
+            "sheetName": {
+              "type": "string",
+              "description": "Nombre de la hoja a monitorear"
+            },
+            "column": {
+              "type": "string",
+              "description": "Nombre de la columna a evaluar (según header de la primera fila)"
+            },
+            "condition": {
+              "type": "string",
+              "description": "Condición a evaluar sobre el valor de la celda. Ej: '< 10', '=== \"PENDIENTE\"', 'includes(\"urgente\")'",
+              "examples": ["< 10", "=== \"PENDIENTE\"", "> 0"]
+            },
+            "message": {
+              "type": "string",
+              "description": "Mensaje a enviar. Soporta variables: {row}, {nombreColumna}. Ej: 'Stock bajo: {Producto} tiene {Cantidad} unidades'"
+            }
+          }
+        },
+        "default": []
+      }
+    }
+  }
+}

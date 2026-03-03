@@ -1,0 +1,18 @@
+{
+  "name": "sheets-plugin",
+  "version": "1.0.0",
+  "description": "Plugin de Google Sheets para OpenClaw",
+  "main": "src/index.ts",
+  "openclaw": {
+    "extensions": ["src/index.ts"]
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0",
+    "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/node-cron": "^3.0.11",
+    "typescript": "^5.0.0"
+  }
+}
